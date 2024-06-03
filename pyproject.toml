@@ -5,10 +5,14 @@ description = ""
 authors = ["ednguyenn"]
 
 [tool.poetry.dependencies]
-python = "3.11"
+python = "3.11.5"
 dvc = "^2.10.0"
 hydra-core = "^1.1.1"
 pdoc3 = "^0.10.0"
+pandas = "^2.2.2"
+matplotlib = "^3.9.0"
+scikit-learn = "^1.5.0"
+seaborn = "^0.13.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
