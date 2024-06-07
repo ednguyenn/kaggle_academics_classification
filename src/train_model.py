@@ -9,7 +9,18 @@ from dataclasses import dataclass
 from sklearn.metrics import accuracy_score
 import sklearn.model_selection 
 from process import DataIngestionConfig, DataTransformartion
+
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, AdaBoostClassifier
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+import xgboost as xgb
+
+from sklearn.metrics import accuracy_score
+
+# import packages for hyperparameters tuning xgboost
+from hyperopt import STATUS_OK, Trials, fmin, hp, tpe
 
 @dataclass
 class ModelTrainerConfig:
@@ -41,8 +52,7 @@ class ModelTrainer:
                           
             }
             
-            #########################
-            #use the cross_validate_model for further task
+            
             
             #evaluate different model then save them into a dictionary
             model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test, models= models,params=params)

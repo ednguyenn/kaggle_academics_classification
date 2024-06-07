@@ -16,6 +16,8 @@ seaborn = "^0.13.2"
 plotly = "^5.22.0"
 nbformat = "^4.2.0"
 dill = "^0.3.8"
+xgboost = "^2.0.3"
+hyperopt = "^0.2.7"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"

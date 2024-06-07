@@ -11,7 +11,8 @@ from sklearn.metrics import accuracy_score
 import numpy as np
 from sklearn.model_selection import GridSearchCV
 
-
+import plotly.express as px
+import pandas as pd 
 
 
 
@@ -91,7 +92,7 @@ def save_object(file_path, obj):
 
 
 #implement cross validation using Kfold
-def cross_validate_model(model, X_train, y_train, params, n_splits=5):
+def cross_validate_model(model, X_train, y_train, n_splits=5):
     """
     Performs K-Fold cross-validation for a given model, returns the last model and average validation accuracy.
 
@@ -99,7 +100,7 @@ def cross_validate_model(model, X_train, y_train, params, n_splits=5):
         model: Machine learning model class (e.g., RandomForestClassifier)
         X_train: Training feature dataset
         y_train: Training target dataset
-        params: Dictionary of parameters to initialize the model
+        params: Dictionary of parameters to initialize the model (optional)
         n_splits: Number of folds for cross-validation (default: 10)
 
     Returns:
@@ -119,7 +120,8 @@ def cross_validate_model(model, X_train, y_train, params, n_splits=5):
         y_val = y_train.iloc[valid_ind]
         
         # Model initialization and training
-        clf = model(**params)
+        
+        clf = model()
         clf.fit(X_fold_train, y_fold_train)
         
         # Predict and evaluate
@@ -190,3 +192,44 @@ def column_division(threshold,df):
         else:
             num_cols.append(col)
     return cat_cols, num_cols
+
+
+def plot_feature_importances(model, model_name, color_scale='Reds', dataframe=None):
+    """
+    Plots feature importances of a fitted random forest model.
+
+    Parameters:
+    model (RandomForest model): The trained random forest model.
+    color_scale (str): Color scale for the plot.
+    dataframe (pd.DataFrame): DataFrame used to train the model. Must not be None.
+
+    Returns:
+    Plotly Figure: A plot showing feature importances.
+    """
+    if dataframe is None:
+        raise ValueError("Dataframe cannot be None and must contain the feature names.")
+
+    # Extracting feature importances and sorting them
+    importances = model.feature_importances_
+    indices = np.argsort(importances)[::-1]
+    feature_names = dataframe.columns
+
+    # Creating a DataFrame for the importances
+    feature_importances = pd.DataFrame({
+        'Feature': feature_names[indices],
+        'Importance': importances[indices]
+    })
+
+    # Plotting the feature importances
+    fig = px.bar(feature_importances.sort_values('Importance', ascending=True), 
+                 x='Importance', 
+                 y='Feature',
+                 title=f"Feature Importances in {model_name}",
+                 labels={'Importance': 'Importance', 'Feature': 'Feature'},
+                 height=1400,
+                 color='Importance',
+                 color_continuous_scale=color_scale)
+
+    fig.update_layout(xaxis_title='Importance', yaxis_title='Feature')
+
+    return fig
