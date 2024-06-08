@@ -1,1 +1,9 @@
-name: model1
+model:
+  name: xgboost.XGBClassifier
+  params:
+    colsample_bytree: 0.9111906612847519
+    gamma: 5.714944925695296
+    max_depth: 13
+    min_child_weight: 3.0
+    reg_alpha: 40.0
+    reg_lambda: 0.4404818765079873

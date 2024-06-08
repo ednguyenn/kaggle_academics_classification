@@ -142,34 +142,6 @@ def cross_validate_model(model, X_train, y_train, n_splits=5,params=None):
     print("Average Validation Accuracy:", average_val_accuracy)
 
     return clf, average_val_accuracy
-
-
-def evaluate_models(X_train, y_train, X_test, y_test,models,params):
-    """
-    This function takes splitted datasets after transformation and output the models' auc_roc_score
-    """
-    try:
-        acc = {}
-        
-        for i in range(len(list(models))):
-            model = list(models.values())[i]
-            para=params[list(models.keys())[i]]
-            
-            gs = GridSearchCV(model,para,cv=3)
-            gs.fit(X_train,y_train)
-            
-            model.set_params(**gs.best_params_)
-            model.fit(X_train,y_train)
-            
-            y_pred=model.predict(X_test)
-            
-            score=roc_auc_score(y_test,y_pred)
-            acc[list(models.keys())[i]] = score
-            return acc
-    except Exception as e:
-        raise CustomException(e,sys)
-
-
             
             
 def load_object(file_path):
