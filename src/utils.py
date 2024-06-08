@@ -92,7 +92,7 @@ def save_object(file_path, obj):
 
 
 #implement cross validation using Kfold
-def cross_validate_model(model, X_train, y_train, n_splits=5):
+def cross_validate_model(model, X_train, y_train, n_splits=5,params=None):
     """
     Performs K-Fold cross-validation for a given model, returns the last model and average validation accuracy.
 
@@ -120,8 +120,10 @@ def cross_validate_model(model, X_train, y_train, n_splits=5):
         y_val = y_train.iloc[valid_ind]
         
         # Model initialization and training
-        
-        clf = model()
+        if params:
+            clf = model(**params)
+        else:
+            clf = model()
         clf.fit(X_fold_train, y_fold_train)
         
         # Predict and evaluate

@@ -1,1 +1,5 @@
-#up and running MLops with Flask and OOP 
+#perform hyperparam tuning on xgboost
+#handling outliers, transformation pipeline (hands on ML )
+
+#read other notebooks on higher score, implement catboost, lightboost as well 
+#pytest 
