@@ -207,3 +207,4 @@ def plot_feature_importances(model, model_name, color_scale='Reds', dataframe=No
     fig.update_layout(xaxis_title='Importance', yaxis_title='Feature')
 
     return fig
+
