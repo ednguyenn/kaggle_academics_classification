@@ -3,7 +3,7 @@ import sys
 import pandas as pd 
 
 
-from sklearn.model_selection import train_val_split
+from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from dataclasses import dataclass
@@ -44,7 +44,7 @@ class DataIngestion:
             
             #train val split
             logging.info("Train val split initiated")
-            train_set, val_set=train_val_split(df,val_size=0.2, random_state=112)
+            train_set, val_set=train_test_split(df,val_size=0.2, random_state=112)
             
             #save train and val data into local destination
             train_set.to_csv(self.ingestion_config.train_data_path,index=False,header=True)
