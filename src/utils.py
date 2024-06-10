@@ -10,8 +10,11 @@ from sklearn.model_selection import KFold
 from sklearn.metrics import accuracy_score
 import numpy as np
 from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import LabelEncoder
 
 import plotly.express as px
+import matplotlib.pyplot as plt
+import seaborn as sns
 import pandas as pd 
 
 
@@ -208,3 +211,157 @@ def plot_feature_importances(model, model_name, color_scale='Reds', dataframe=No
 
     return fig
 
+def plot_target_distribution(df):
+    """
+    Creates a count plot of the 'Target' column in the given DataFrame.
+
+    Parameters:
+    df (DataFrame): The input DataFrame containing the 'Target' column.
+    """
+    # Create the count plot
+    plt.figure(figsize=(10, 6))
+    ax = sns.countplot(x='Target', data=df, palette='viridis')
+
+    # Annotate each bar with the count
+    for p in ax.patches:
+        ax.annotate(f'{p.get_height()}', (p.get_x() + p.get_width() / 2., p.get_height()), 
+                    ha='center', va='center', xytext=(0, 5), textcoords='offset points')
+
+    # Add title and labels
+    plt.title('Distribution of Target Column')
+    plt.xlabel('Target')
+    plt.ylabel('Count')
+
+    # Show the plot
+    plt.show()
+    
+    
+    
+def plot_categorical_distribution(df, cat_cols):
+    """
+    Creates count plots for each categorical column in the given DataFrame.
+
+    Parameters:
+    df (DataFrame): The input DataFrame containing categorical columns.
+    cat_cols (list): List of categorical column names.
+    """
+    # Create the figure and set the size
+    plt.figure(figsize=(18, 24))
+    plotnumber = 1
+
+    for col in cat_cols:
+        if plotnumber <= len(cat_cols):
+            ax = plt.subplot(4, 3, plotnumber)
+            sns.countplot(x=df[col], data=df, palette='pastel')
+            
+            # Add labels to each bar in the plot
+            for p in ax.patches:
+                ax.text(p.get_x() + p.get_width() / 2, p.get_height() + 3, f'{int(p.get_height())}', ha="center")
+            
+            plt.xlabel(col)
+            # plt.xticks(rotation=45)
+            plt.xlabel(col)
+            
+        plotnumber += 1
+
+    # Add a main title and adjust layout
+    plt.suptitle('Distribution of Categorical Variables', fontsize=40, y=1)
+    plt.tight_layout()
+    plt.show()
+    
+    
+def plot_categorical_distribution_by_target(df, cat_cols, target_col):
+    """
+    Creates count plots for each categorical column in the given DataFrame,
+    with the counts split by the target column.
+
+    Parameters:
+    df (DataFrame): The input DataFrame containing categorical columns and the target column.
+    cat_cols (list): List of categorical column names.
+    target_col (str): The name of the target column.
+    """
+    # Create the figure and set the size
+    plt.figure(figsize=(18, 24))
+    plotnumber = 1
+
+    # Loop through each categorical column
+    for col in cat_cols:
+        if plotnumber <= len(cat_cols):
+            plt.subplot(4, 3, plotnumber)
+            sns.countplot(x=df[col], hue=df[target_col], palette='bright')
+            plt.xlabel(col)
+            plt.ylabel('Count')
+            plt.legend(title=target_col)
+            
+        plotnumber += 1
+
+    # Add a main title and adjust layout
+    plt.suptitle(f'Distribution of Categorical Variables by {target_col}', fontsize=40, y=1)
+    plt.tight_layout()
+    plt.show()
+    
+    
+def plot_numeric_distribution(df, num_cols):
+    """
+    Creates histograms and box plots for each numerical column in the given DataFrame.
+
+    Parameters:
+    df (DataFrame): The input DataFrame containing numerical columns.
+    num_cols (list): List of numerical column names.
+    """
+    # Create the figure and set the size
+    plt.figure(figsize=(18, 5 * len(num_cols)))
+    plotnumber = 1
+
+    # Loop through each numerical column
+    for col in num_cols:
+        if plotnumber <= len(num_cols):
+            
+            # Histogram
+            ax1 = plt.subplot(len(num_cols), 2, 2 * plotnumber - 1)
+            sns.histplot(df[col], color='salmon', fill=True, stat="density")
+            for spine in ax1.spines.values():
+                spine.set_visible(True)
+                spine.set_color('black')
+                spine.set_linewidth(0.5)
+            ax1.set_xlabel(col)
+            ax1.grid(False)
+            
+            # Box plot
+            ax2 = plt.subplot(len(num_cols), 2, 2 * plotnumber)
+            sns.boxplot(y=df[col], color='salmon', width=0.6, linewidth=1)
+            for spine in ax2.spines.values():
+                spine.set_visible(True)
+                spine.set_color('black')
+                spine.set_linewidth(0.5)
+            ax2.set_xlabel(col)
+            ax2.set_ylabel('')
+            ax2.grid(False)
+
+        plotnumber += 1
+
+    # Add a main title and adjust layout
+    plt.suptitle('Distribution of Numeric Variables', fontsize=40, y=1)
+    plt.tight_layout()
+    plt.show()
+
+def plot_correlation_matrix(df):
+    # Correlation matrix
+    plt.figure(figsize=(21, 18))
+    sns.heatmap(df.corr(), annot=True, cmap='coolwarm', fmt='.1f', linewidths=2, linecolor='lightgrey')
+    plt.suptitle('Correlation Matrix', fontsize=40, y=1)
+    plt.show()
+    
+def preprocessing(df):
+    # Creating an instance of LabelEncoder
+    label_encoder = LabelEncoder()
+    
+    # Encoding the 'Target' column
+    df['Target'] = label_encoder.fit_transform(df['Target'])
+    
+    return df
+
+def clean_data(df):
+    #correct column names
+    df=df.rename(columns={'Nacionality':'Nationality'})
+    return df

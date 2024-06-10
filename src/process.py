@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
 
-from utils import CustomException, logging,save_object, column_division
+from utils import *
 
 #a convenient way to define classes to store data
 @dataclass
@@ -74,6 +74,7 @@ class DataTransformartion:
     
     
     def preprocessing(self,df):
+        df = preprocessing(df)
         return df 
             
     def get_data_transformer_object(self,df):
@@ -81,7 +82,8 @@ class DataTransformartion:
         This method generates data proprocessor 
         """
         try:
-            #sorted numerical and categorical columnsd
+            df = clean_data(df)
+            #sorted numerical and categorical columns
             cat_cols, num_cols = column_division(threshold=8,df=df)
             
             #create seperate Pipeline for numerical and categorical columns
@@ -125,7 +127,7 @@ class DataTransformartion:
             
             # Apply preprocessing function to the entire DataFrame
             train_df = self.preprocessing(train_df)
-            val_df = self.preprocessing(val_df)
+            
             
             X_train= train_df.drop(columns=[target_column_name],axis=1)
             y_train= train_df[target_column_name]
