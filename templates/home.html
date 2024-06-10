@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %} Home Page {% endblock %}
+{% block content %}
+<section style="text-align: center;">
+    <h2>Make prediction here</h2>
+
+    <form id="customDataForm" action="/predict" method="POST">
+        <label for="id">ID:</label><br>
+        <input type="number" id="id" name="id"><br>
+        
+        <label for="marital_status">Marital Status:</label><br>
+        <input type="text" id="marital_status" name="marital_status"><br>
+        
+        <label for="application_mode">Application Mode:</label><br>
+        <input type="number" id="application_mode" name="application_mode" step="1"><br>
+        
+        <label for="application_order">Application Order:</label><br>
+        <input type="number" id="application_order" name="application_order" step="1"><br>
+        
+        <label for="course">Course:</label><br>
+        <input type="text" id="course" name="course"><br>
+        
+        <label for="attendance">Attendance:</label><br>
+        <input type="text" id="attendance" name="attendance"><br>
+        
+        <label for="previous_qualification">Previous Qualification:</label><br>
+        <input type="text" id="previous_qualification" name="previous_qualification"><br>
+        
+        <label for="previous_qualification_grade">Previous Qualification Grade:</label><br>
+        <input type="number" id="previous_qualification_grade" name="previous_qualification_grade" step="0.1"><br>
+        
+        <label for="nationality">Nationality:</label><br>
+        <input type="text" id="nationality" name="nationality"><br>
+        
+        <label for="mother_qualification">Mother's Qualification:</label><br>
+        <input type="text" id="mother_qualification" name="mother_qualification"><br>
+        
+        <label for="father_qualification">Father's Qualification:</label><br>
+        <input type="text" id="father_qualification" name="father_qualification"><br>
+        
+        <label for="mother_occupation">Mother's Occupation:</label><br>
+        <input type="text" id="mother_occupation" name="mother_occupation"><br>
+        
+        <label for="father_occupation">Father's Occupation:</label><br>
+        <input type="text" id="father_occupation" name="father_occupation"><br>
+        
+        <label for="admission_grade">Admission Grade:</label><br>
+        <input type="number" id="admission_grade" name="admission_grade" step="0.1"><br>
+        
+        <label for="displaced">Displaced:</label><br>
+        <input type="text" id="displaced" name="displaced"><br>
+        
+        <label for="educational_special_needs">Educational Special Needs:</label><br>
+        <input type="text" id="educational_special_needs" name="educational_special_needs"><br>
+        
+        <label for="debtor">Debtor:</label><br>
+        <input type="text" id="debtor" name="debtor"><br>
+        
+        <label for="tuition_fees_up_to_date">Tuition Fees Up to Date:</label><br>
+        <input type="text" id="tuition_fees_up_to_date" name="tuition_fees_up_to_date"><br>
+        
+        <label for="gender">Gender:</label><br>
+        <input type="text" id="gender" name="gender"><br>
+        
+        <label for="scholarship_holder">Scholarship Holder:</label><br>
+        <input type="text" id="scholarship_holder" name="scholarship_holder"><br>
+        
+        <label for="age_at_enrollment">Age at Enrollment:</label><br>
+        <input type="number" id="age_at_enrollment" name="age_at_enrollment" step="1"><br>
+        
+        <label for="international">International:</label><br>
+        <input type="text" id="international" name="international"><br>
+        
+        <label for="curricular_units_1st_sem_credited">Curricular Units 1st Sem Credited:</label><br>
+        <input type="number" id="curricular_units_1st_sem_credited" name="curricular_units_1st_sem_credited" step="1"><br>
+        
+        <!-- Add more input fields for other attributes -->
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <h2> The prediction is {{ result }} </h2>
+
+</section>
+{% endblock %}
