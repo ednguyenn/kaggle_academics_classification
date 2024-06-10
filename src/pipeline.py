@@ -22,8 +22,8 @@ class PredictionPipeline:
             preprocessor=load_object(file_path=preprocessor_path)
             
             #perform data cleaning and transformation
-            cleaned_data = DataTransformartion.preprocessing(features)
-            transformerd_data= preprocessor.transform(cleaned_data)
+            preprocessed_data = DataTransformartion.preprocessing(features)
+            transformerd_data= preprocessor.transform(preprocessed_data)
             
             #make prediction 
             prediction= model.predict(transformerd_data)

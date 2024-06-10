@@ -27,7 +27,7 @@ class DataIngestion:
     def initiate_data_ingestion(self):
         """_summary_
         This method will retrieve data from origin source and save it to project directory
-        Then perform train_val_split and save them into corresponding folder
+        Then it will clean the data before performing train_val_split and save them into corresponding folder
 
         Returns: paths to train and val data
        
@@ -41,10 +41,14 @@ class DataIngestion:
             #ensures that the destination directory for storing processed data exists
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
             
+            #cleaning data before save it to local destination for further task 
+            clean_df = clean_data(df)
             
             #train val split
             logging.info("Train val split initiated")
-            train_set, val_set=train_test_split(df,val_size=0.2, random_state=112)
+            train_set, val_set=train_test_split(clean_df,val_size=0.2, random_state=112)
+            
+            
             
             #save train and val data into local destination
             train_set.to_csv(self.ingestion_config.train_data_path,index=False,header=True)
@@ -74,7 +78,7 @@ class DataTransformartion:
     
     
     def preprocessing(self,df):
-        df = preprocessing(df)
+        df = column_label_encoder(df,column_name='Target')
         return df 
             
     def get_data_transformer_object(self,df):
@@ -82,7 +86,6 @@ class DataTransformartion:
         This method generates data proprocessor 
         """
         try:
-            df = clean_data(df)
             #sorted numerical and categorical columns
             cat_cols, num_cols = column_division(threshold=8,df=df)
             

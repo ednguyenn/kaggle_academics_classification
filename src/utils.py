@@ -8,13 +8,13 @@ import dill
 
 from sklearn.model_selection import KFold
 from sklearn.metrics import accuracy_score
-import numpy as np
-from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import LabelEncoder
 
 import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+import numpy as np
 import pandas as pd 
 
 
@@ -352,13 +352,14 @@ def plot_correlation_matrix(df):
     plt.suptitle('Correlation Matrix', fontsize=40, y=1)
     plt.show()
     
-def preprocessing(df):
-    # Creating an instance of LabelEncoder
-    label_encoder = LabelEncoder()
-    
-    # Encoding the 'Target' column
-    df['Target'] = label_encoder.fit_transform(df['Target'])
-    
+def column_label_encoder(df, column_name):
+    if column_name in df.columns:
+        # Creating an instance of LabelEncoder
+        label_encoder = LabelEncoder()
+
+        # Encoding the specified column
+        df[column_name] = label_encoder.fit_transform(df[column_name])
+
     return df
 
 def clean_data(df):
